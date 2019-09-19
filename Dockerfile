@@ -2,7 +2,7 @@ FROM alpine:edge
 
 # VERSIONS
 ENV ALPINE_VERSION=edge \
-    PYTHON_VERSION=3.7.3
+    PYTHON_VERSION=3.7.4
 
 # PATHS
 ENV PYTHON_PATH=/usr/local/bin/ \
@@ -68,8 +68,8 @@ RUN set -ex ;\
     export PYTHON_MAJOR_VERSION=$(echo "${PYTHON_VERSION}" | rev | cut -d"." -f3-  | rev) ;\
     export PYTHON_MINOR_VERSION=$(echo "${PYTHON_VERSION}" | rev | cut -d"." -f2-  | rev) ;\
     # replacing default repositories with edge ones
-    echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/community" >> /etc/apk/repositories ;\
-    echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main" >> /etc/apk/repositories ;\
+    echo "http://dl-cdn.alpinelinux.org/alpine/$ALPINE_VERSION/community" >> /etc/apk/repositories ;\
+    echo "http://dl-cdn.alpinelinux.org/alpine/$ALPINE_VERSION/main" >> /etc/apk/repositories ;\
     # Add the packages, with a CDN-breakage fallback if needed
     apk add --no-cache $PACKAGES || \
         (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES) ;\
@@ -77,9 +77,9 @@ RUN set -ex ;\
     apk add --no-cache --virtual .build-deps $PYTHON_BUILD_PACKAGES || \
         (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache --virtual .build-deps $PYTHON_BUILD_PACKAGES) ;\
     # turn back the clock -- so hacky!
-    echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories ;\
-    # echo "@community http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/community" >> /etc/apk/repositories ;\
-    # echo "@testing http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/testing" >> /etc/apk/repositories ;\
+    #echo "http://dl-cdn.alpinelinux.org/alpine/v$ALPINE_VERSION/main/" > /etc/apk/repositories ;\
+    # echo "@community http://dl-cdn.alpinelinux.org/alpine/$ALPINE_VERSION/community" >> /etc/apk/repositories ;\
+    # echo "@testing http://dl-cdn.alpinelinux.org/alpine/$ALPINE_VERSION/testing" >> /etc/apk/repositories ;\
     # echo "@edge-main http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories ;\
     # use pyenv to download and compile specific python version
     git clone --depth 1 https://github.com/pyenv/pyenv /usr/local/lib/pyenv ;\
@@ -119,7 +119,7 @@ RUN /entrypoint.sh \
   -p SQLAlchemy \
   -p chardet \
   -p openpyxl \
-  -p pyodbc 
+  -p PyMySQL
 
 # This script installs APK and Pip prerequisites on container start, or ONBUILD. Notes:
 #   * Reads the -a flags and /apk-requirements.txt for install requests
