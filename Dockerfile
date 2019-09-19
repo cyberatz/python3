@@ -111,15 +111,26 @@ RUN set -ex ;\
 # Copy in the entrypoint script -- this installs prerequisites on container start.
 COPY entrypoint.sh /entrypoint.sh
 RUN pip install --upgrade pip
-#RUN pip install git+https://github.com/pymssql/pymssql.git
 #RUN pip install pyodbc
+#RUN pip install simplejson requests  SQLAlchemy chardet openpyxl PyMySQL ipython Alembic
+#RUN pip install Cython
+#ENV PATH="/usr/bin:${PATH}"
+RUN apk --no-cache add git gcc openssl-dev python-dev cython cython-dev g++ freetds-dev freetds unixodbc-dev
+RUN pip install git+https://github.com/pymssql/pymssql.git
 RUN /entrypoint.sh \
   -p simplejson \
   -p requests  \
   -p SQLAlchemy \
   -p chardet \
   -p openpyxl \
-  -p PyMySQL
+  -p PyMySQL \
+  -p ipython \
+  -p Alembic \
+  -p Cython
+
+  #-p pandas \
+
+
 
 # This script installs APK and Pip prerequisites on container start, or ONBUILD. Notes:
 #   * Reads the -a flags and /apk-requirements.txt for install requests
