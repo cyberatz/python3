@@ -126,9 +126,8 @@ RUN /entrypoint.sh \
   -p PyMySQL \
   -p ipython \
   -p Alembic \
-  -p Cython
-
-  #-p pandas \
+  -p Cython \
+  -p pandas
 
 
 
