@@ -2,7 +2,7 @@ FROM alpine:edge
 
 # VERSIONS
 ENV ALPINE_VERSION=edge \
-    PYTHON_VERSION=3.7.4
+    PYTHON_VERSION=3.10.0
 
 # PATHS
 ENV PYTHON_PATH=/usr/local/bin/ \
